@@ -1,0 +1,37 @@
+1. ESP32 Development Board 
+Microcontroller with built-in Wi-Fi and Bluetooth, used for IoT communication and control.
+
+
+2. ZMPT101B Voltage Sensor  
+Used to measure AC voltage safely and accurately.
+
+
+3. SCT013 (5A/1V) Current Sensor 
+A non-invasive sensor that measures AC current in household devices.
+
+
+4. Single Channel Relay 
+Allows switching of electrical appliances based on system logic.
+
+
+5. 5V 1A Adapter 
+Power supply for the ESP32 and connected components.
+
+
+6. 200W Bulb + Holder 
+Acts as a test load to simulate real appliance energy consumption.
+
+
+7. Plug and Wiring – For powering and connecting all components.
+
+
+8. Resistor 10KΩ (x2) – Used in voltage dividers and signal conditioning.
+
+
+9. Resistor 100Ω – Limits current in specific parts of the circuit for safety.
+
+
+10. Capacitor 10μF – Stabilizes and filters voltage in the circuit.
+
+
+11. Breadboard, Power Cord, etc. – For assembling and prototyping the circuit without soldering.
