@@ -1,0 +1,16 @@
+Software Requirements
+
+1.Compiler 
+Converts written code into machine-readable format that the Arduino board can execute.
+
+2.Uploader 
+Transfers the compiled code from the IDE to the Arduino/ESP32 board for execution.
+
+3.Serial Monitor
+Displays real-time output from the board; useful for debugging and testing.
+
+4.Sketchbook 
+Folder that stores all your Arduino sketches (programs).
+
+5.Libraries 
+Pre-written code packages that simplify the implementation of complex functionalities like sensor interfacing, Wi-Fi control, and more.
