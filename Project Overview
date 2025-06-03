@@ -1,0 +1,36 @@
+PROJECT OVERVIEW
+Smart Energy Monitoring System
+
+This project aims to develop a Smart Home Energy Monitoring and Management System (SHEMS) using the ESP32 Wi-Fi module and Blynk IoT platform.
+It enables real-time tracking of voltage, current, power, and energy cost. The system displays live data through a mobile app and web dashboard,
+helping users visualize consumption patterns and manage appliances more efficiently.
+
+
+
+
+PROBLEM STATEMENT
+
+Conventional meters lack real-time monitoring, detailed insights, and appliance-level tracking. 
+This project addresses the need for an IoT-based system that allows remote access, individual appliance analysis, cost tracking,
+and improved energy management in smart homes.
+
+
+
+PROJECT OBJECTIVES
+
+> Design a low-cost IoT-based energy monitoring system using ESP32 and current/voltage sensors.
+
+> Display real-time power metrics (voltage, current, power, cost) on the Blynk app.
+
+> Provide daily usage analytics and remote access via mobile or web interface.
+
+> Enable alerts when consumption exceeds set thresholds.
+
+> Implement load control features for appliances via the Blynk app.
+
+> Ensure accuracy through calibration and testing.
+
+ > Offer scalable architecture for future smart grid and renewable integration.
+
+
+
