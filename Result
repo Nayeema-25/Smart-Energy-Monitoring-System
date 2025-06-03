@@ -1,0 +1,15 @@
+RESULT
+
+ We have obtained real-time monitoring of voltage, current, energy and total
+
+power consumption.
+
+ We can monitor the result in Blynk IoT application.
+
+ Below figure 2 shows model of Smart Energy Monitoring System.
+
+ Here the input is voltage sensor & current sensor, after calculating voltage &
+
+current the information is send to ESP32 Wi-Fi module which stores the data
+
+& sends to single channel relay which is our output.
