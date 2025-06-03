@@ -1,0 +1,133 @@
+#define BLYNK_TEMPLATE_ID "TMPL30qRmBbxs"
+#define BLYNK_TEMPLATE_NAME "Smart energy monitoring system"
+#define BLYNK_PRINT Serial
+
+#include "EmonLib.h"
+#include <EEPROM.h>
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <BlynkSimpleEsp32.h>
+
+// Calibration constants
+const float vCalibration = 106.0;     // ZMPT101B calibration
+const float currCalibration = 5.0;    // SCT013 5A/1V
+
+// Wi-Fi & Blynk credentials
+const char auth[] = "a44S_zDs7xbsxQQus4VdY8kRE7OWnL_2";
+const char ssid[] = "Redmi";
+const char pass[] = "coolpad.com";
+
+// EnergyMonitor instance
+EnergyMonitor emon;
+
+// Timing variables
+unsigned long lastEnergyMillis = 0;
+unsigned long lastSendMillis = 0;
+
+// Data variables
+float kWh = 0.0;
+float Rupees = 0.0;
+const float kWhLimit = 1.0;  // kWh cutoff threshold
+
+// Relay pin (LOW = ON, HIGH = OFF)
+const int relayPin = 23;
+
+// EEPROM address for kWh persistence
+const int addrKWh = 0;
+
+// Hysteresis threshold for relay control
+const float hysteresis = 1.0;
+
+// Blynk handler for V5 switch: resets kWh when pressed
+BLYNK_WRITE(V5) {
+  if (param.asInt() == 1) {
+    kWh = 0.0;
+    EEPROM.put(addrKWh, kWh);
+    EEPROM.commit();
+    Serial.println("kWh reset to 0 via V5");
+    Blynk.virtualWrite(V3, kWh);
+    Blynk.virtualWrite(V5, 0);
+  }
+}
+
+// Prototype for data send
+void sendEnergyData();
+
+void setup() {
+  Serial.begin(115200);
+  delay(500);
+
+  // Test relay
+  pinMode(relayPin, OUTPUT);
+  Serial.println("Testing relay: ON");
+  digitalWrite(relayPin, LOW);   // Relay ON
+  delay(5000);
+  Serial.println("Testing relay: OFF");
+  digitalWrite(relayPin, HIGH);  // Relay OFF
+  delay(5000);
+
+  // Initialize EEPROM and load saved kWh
+  EEPROM.begin(32);
+  EEPROM.get(addrKWh, kWh);
+  if (kWh < 0 || kWh > 100000) kWh = 0.0;  // Sanity check
+  Serial.printf("Loaded kWh: %.5f\n", kWh);
+
+  // Initialize EmonLib sensors
+  emon.voltage(36, vCalibration, 1.7);
+  emon.current(39, currCalibration);
+
+  // Connect to Wi-Fi and Blynk
+  WiFi.begin(ssid, pass);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nWiFi connected");
+  Blynk.config(auth);
+  Blynk.connect();
+
+  // Initialize timers
+  lastEnergyMillis = millis();
+  lastSendMillis = millis();
+}
+
+void loop() {
+  Blynk.run();
+  unsigned long now = millis();
+
+  // Continuous energy calculation
+  emon.calcVI(20, 2000);
+  float deltaHours = (now - lastEnergyMillis) / 3600000.0;
+  kWh += emon.apparentPower * deltaHours;
+  lastEnergyMillis = now;
+  Rupees = kWh * 5.0;
+
+  // Send & persist every 10 seconds
+  if (now - lastSendMillis >= 10000) {
+    sendEnergyData();
+    lastSendMillis = now;
+    EEPROM.put(addrKWh, kWh);
+    EEPROM.commit();
+  }
+}
+
+void sendEnergyData() {
+  Serial.printf("Vrms: %.2fV\tIrms: %.4fA\tPower: %.2fW\tkWh: %.5fkWh (Limit: %.1f)\tCost: ₹%.2f\n",
+                emon.Vrms, emon.Irms, emon.apparentPower, kWh, kWhLimit, Rupees);
+
+  // Update Blynk widgets
+  Blynk.virtualWrite(V0, emon.Vrms);
+  Blynk.virtualWrite(V1, emon.Irms);
+  Blynk.virtualWrite(V2, emon.apparentPower);
+  Blynk.virtualWrite(V3, kWh);
+  Blynk.virtualWrite(V4, Rupees);
+
+  // Relay control logic based only on kWh
+  if (kWh < kWhLimit) {
+    digitalWrite(relayPin, HIGH);  // Relay ON
+    Serial.println("Relay ON");
+  } else if (kWh >= kWhLimit) {
+    digitalWrite(relayPin, LOW);   // Relay OFF
+    Serial.println("Relay OFF");
+  }
+}
