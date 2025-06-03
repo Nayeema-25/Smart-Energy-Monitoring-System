@@ -1,0 +1,16 @@
+
+
+
+● The ZMPT101B module measures the AC voltage of the connected load.
+
+● The SCT-013-030 sensor detects the current flowing through the circuit.
+
+● The ESP32 calculates the power consumption using the formula:
+Power (W) = Voltage (V) × Current (A)
+
+● The total energy consumed is computed as:
+Energy (kWh) = Power (W) × Time (h).
+
+● The total electricity bill is calculated based on the per-unit cost.
+
+● The data is updated on the Blynk app in the form of numerical values.
