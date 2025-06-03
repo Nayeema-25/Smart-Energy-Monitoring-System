@@ -1,0 +1,58 @@
+The project code for the Smart Energy Monitoring System was written using the Arduino programming framework and uploaded to the ESP32 microcontroller via USB. 
+The process involved the following steps:
+
+
+
+1. Software & Libraries Used:
+
+Platform: Arduino (with ESP32 board support)
+
+Code Editor/Compiler: Arduino-compatible tool (e.g., PlatformIO / Arduino CLI)
+
+Required Libraries:
+
+EmonLib – for energy parameter monitoring
+
+BlynkSimpleEsp32 – for IoT dashboard and connectivity
+
+EEPROM, WiFi, WiFiClient – for persistent memory and networking
+
+
+
+
+
+2. Uploading Steps:
+
+1. Connect the ESP32 board to your computer via USB.
+
+
+2. Open the code in your Arduino-compatible environment.
+
+
+3. Select the board: ESP32 Dev Module.
+
+
+4. Choose the appropriate port (COM/tty) for the connected ESP32.
+
+
+5. Compile and upload the code to the board.
+
+
+
+
+3. Post Upload Actions:
+
+Open the Serial Monitor at 115200 baud rate to observe live readings of:
+
+Voltage (Vrms)
+
+Current (Irms)
+
+Power and Energy Consumption
+
+
+Launch the Blynk IoT mobile app:
+
+Use the appropriate widgets to monitor real-time energy metrics.
+
+Control appliances based on energy thresholds set in the app.
